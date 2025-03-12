@@ -1,8 +1,10 @@
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect } from 'react';
+import { Board } from './components/Board';
+//import { Header } from './components/Header';
 
 import './App.css'
 
-function App() {
+export default function App() {
   const serverURL = 'https://pokeapi.co/api/v2/pokemon/';
   const CARD_NUMBER = 12;
   const POKEMON_NUMBER = 151;
@@ -18,7 +20,8 @@ function App() {
     console.log(pokemonData);
   }
   , [pokemonData]);
-  
+
+  // fetch data from the server
   useEffect(() => {
     const pokemonArray = generateRandomSet().map(pokemonId => fetchPokemon(pokemonId));
     const fetchData = async () => {
@@ -32,6 +35,26 @@ function App() {
   , []);
 
   
+  function handleCardClick(id) {
+    if(!clickedPokemon.includes(id)){
+      setClickedPokemon([...clickedPokemon, id]);
+      setScore(score + 1);
+      if(score > highScore){
+        setHighScore(score);
+      }
+    }else{
+      resetGame();
+    }
+
+    setPokemonData(shuffleArray(pokemonData));
+  }
+
+
+  // Reset game when player loses
+  function resetGame(){
+    setScore(0);
+    setClickedPokemon([]);
+  } 
 
   async function fetchPokemon(pokemonId){
     const response = await fetch(`${serverURL}${pokemonId}`);
@@ -55,6 +78,18 @@ function App() {
     return array;
   }
 
+  // helper function to reshuffle an array randomly
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
 }
 
-export default App
+return(
+  <Board cards={pokemonData} onCardClick={handleCardClick} />
+)
+
+}
+
