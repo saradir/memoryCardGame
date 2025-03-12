@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Board } from './components/Board';
-//import { Header } from './components/Header';
+import { Header } from './components/Header';
 
 import './App.css'
 
@@ -14,46 +14,67 @@ export default function App() {
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [newGame, setNewGame] = useState(true);
 
 
-  useEffect(() => {
-    console.log(pokemonData);
+
+// check for win condition 
+useEffect(() => {
+  if(score === CARD_NUMBER){
+    alert("Nice! You got 'em all!");
   }
-  , [pokemonData]);
+},[score]);
 
   // fetch data from the server
   useEffect(() => {
-    const pokemonArray = generateRandomSet().map(pokemonId => fetchPokemon(pokemonId));
-    const fetchData = async () => {
-      const data = await Promise.all(pokemonArray);
-      setPokemonData(data);
-    }
-    fetchData();
-
-    
+    let ignore = false;
+    if(!ignore && newGame){
+      const pokemonArray = generateRandomSet().map(pokemonId => fetchPokemon(pokemonId));
+      const fetchData = async () => {
+        const data = await Promise.all(pokemonArray);
+        setPokemonData(data);
+      }
+      fetchData();
   }
-  , []);
+    return () => {
+      ignore = true;
+      setNewGame(false);
+    }
+}, [newGame]);
 
   
+
   function handleCardClick(id) {
+    console.log(id);
     if(!clickedPokemon.includes(id)){
       setClickedPokemon([...clickedPokemon, id]);
-      setScore(score + 1);
-      if(score > highScore){
-        setHighScore(score);
-      }
-    }else{
-      resetGame();
+      setScore(prevScore => {
+        const newScore = prevScore +1;
+        if(newScore > highScore){
+          setHighScore(newScore);
+        }
+
+        return newScore;
+      });
+      }else{
+      newRound();
     }
 
-    setPokemonData(shuffleArray(pokemonData));
+    setPokemonData(shuffleArray([...pokemonData]));
   }
 
-
+  // this will reset score, highscore and generate new cards
+  function startGame(){
+    setScore(0);
+    setHighScore(0);
+    setClickedPokemon([]);
+    setNewGame(true);
+  }
   // Reset game when player loses
-  function resetGame(){
+  function newRound(){
     setScore(0);
     setClickedPokemon([]);
+    console.log('game reset');
   } 
 
   async function fetchPokemon(pokemonId){
@@ -88,7 +109,10 @@ export default function App() {
 }
 
 return(
-  <Board cards={pokemonData} onCardClick={handleCardClick} />
+  <>
+    <Header score={score} highScore={highScore} onNewGameClick={startGame} />
+    <Board cards={pokemonData} onCardClick={handleCardClick} />
+  </>
 )
 
 }

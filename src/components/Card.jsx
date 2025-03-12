@@ -1,8 +1,8 @@
-export function Card({name, img, onCardClick}) {
+export function Card({id, name, img, onCardClick}) {
   return (
-    <div className="card" onClick={onCardClick}>
+    <div className="card" onClick={() => onCardClick(id)}>
       <img src={img} alt={name} />
-      <p>{name}</p>
+      <h2>{name.charAt(0).toUpperCase()+name.slice(1)}</h2>
     </div>
   );
 }
