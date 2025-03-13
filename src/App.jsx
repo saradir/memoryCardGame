@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Board } from './components/Board';
 import { Header } from './components/Header';
 
-import './App.css'
+import './styles/styles.css'
 
 export default function App() {
   const serverURL = 'https://pokeapi.co/api/v2/pokemon/';
@@ -21,7 +21,8 @@ export default function App() {
 // check for win condition 
 useEffect(() => {
   if(score === CARD_NUMBER){
-    alert("Nice! You got 'em all!");
+    alert("Nice! You got 'em all! Let's try some new ones?");
+    startGame();
   }
 },[score]);
 

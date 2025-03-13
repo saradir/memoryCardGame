@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'PokemonFont';
+    src: url('../fonts/PokemonSolidNormal-xyWR.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+#root{
+    height:100vh;
+    font-family: 'PokemonFont';
+    -webkit-text-stroke: 1px black;
+    color: #cfd72d;
+
+}
+.board{
+    display: flex;
+    max-width: 100vw;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content: center;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 160px;
+    flex: 1 1 calc((100% / 5) - 10px); 
+    border: 5px solid rgb(182, 140, 34);
+    border-radius: 2px;
+    padding: 15px;
+}
+
+img{
+    height: 100%;
+    width:100%;
+    
+}
+
+.header{
+    justify-content: space-between;
+    font-family: 'PokemonFont';
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #cfd72d;
+    width:100vw;
+    height: 200px;
+    display: flex;
+    background-image: url(../assets/pokeballBG.png);
+    background-position: center;
+    background-size: cover;
+    position:relative;
+
+}
+
+.left-header{
+    margin: 10px;
+}
+.header h1{
+    -webkit-text-stroke: 2px black;
+    margin-top:0;
+    
+
+}
+
+.new-game-button{
+    height:50px;
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    position: absolute;
+    top:40%;
+    right: 10px;
+    background-color: transparent;
+    border:none;
+}
+
+.new-game-button:hover{
+    font-size: large;
+    -webkit-text-stroke: 1px #cfd72d;
+    color: red;
+    
+}
+
+.card h2{
+    margin-bottom: 0;
+}
+
+.card:hover{
+    color:rgb(212, 28, 28);
+    box-shadow: 0 0 20px rgba(222, 94, 20, 0.8);
+    -webkit-text-stroke: 2px black;
+}
+
+.scoreboard{
+    margin:2px;
+    position:sticky;
+    top: 10px;
+    right:10px;
+}
+
+.scoreboard p{
+    margin:0;
+}
